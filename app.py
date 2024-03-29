@@ -70,7 +70,7 @@ from langchain.chains import LLMChain
 
 chain = LLMChain(llm=llm, prompt=prompt)
 
-print(chain.invoke("fruit")["text"])
+#print(chain.invoke("fruit")["text"])
 
 
 # Now lets plug agents into the mix and access google search api
@@ -99,6 +99,21 @@ react_prompt = hub.pull("hwchase17/react")
 agent = create_react_agent(tools=tools, llm=llm, prompt=react_prompt)
 agent_executor = AgentExecutor(agent=agent, tools=tools, verbose=True)
 
-agent_executor.invoke(
-	input={"input": "Who is the current leader of Japan? What is the largest prime number that is smaller than their current age? (make sure you convert the age to an int before doing the calculation)"}
-)
+#agent_executor.invoke(
+#	input={"input": "Who is the current leader of Japan? What is the largest prime number that is smaller than their current age? (make sure you convert the age to an
+# 	int before doing the calculation)"}
+#)
+
+from langchain.chains import ConversationChain
+from langchain.memory import ConversationBufferMemory
+
+# We will reuse our llm as before
+
+conversation = ConversationChain(llm=llm, memory=ConversationBufferMemory())
+
+conversation.predict(input="Hi there!")
+conversation.predict(input="We are having a conversation together")
+conversation.predict(input="The weather is nice today")
+conversation.predict(input="What is the first thing that I said to you?")
+
+print(conversation.memory.buffer)
