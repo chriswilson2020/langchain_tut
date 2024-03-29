@@ -26,7 +26,9 @@ Examples:
 N/A
 
 Notes:
-The current version is a work in progress check back later for more info
+The current version is a work in progress check back later for more info.
+As I am working through I will comment out previous examples to keept things neat in the terminal
+I also want to reduce the cost of api calls by not calling already working snippets during testing
 --------------------------------------------------------------------------------
 """
 
@@ -53,7 +55,10 @@ prompt = PromptTemplate(
 	template="What are 5 vacation destinations for someone who likes to eat {food}?"
 )
 
-print(prompt.format(food='dessert'),"\n")
+# In this example the output of invoking the llm is a class so we access the content of 
+# it through dot notation
+
+# print(prompt.format(food='dessert'),"\n")
 
 #output = llm.invoke(prompt.format(food='dessert'))
 #print(output.content)
@@ -62,5 +67,14 @@ print(prompt.format(food='dessert'),"\n")
 # Lets make our first chain
 from langchain.chains import LLMChain
 
+# we will reuse the llm and prompt variables from above
+
+chain = LLMChain(llm=llm, prompt=prompt)
+
+print(chain.invoke("fruit")["text"])
 
 
+# Now lets plug agents into the mix and access google search api
+
+from langchain.agents import load_tools
+from langchain.agents import initialize_agent
